@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home"
+
+        android:title="Bosh oyna"/>
+
+    <item
+        android:id="@+id/currencyFragment"
+        android:icon="@drawable/subscription"
+        android:title= "Barcha valyutalar"/>
+
+
+    <item
+        android:id="@+id/calculatorFragment"
+        android:title="Calculator"
+        android:icon="@drawable/shorts"/>
+
+
+    <item
+        android:id="@+id/currencyFragment2"
+        android:icon="@drawable/subscription"
+        android:title= "Barcha valyutalar"/>
+
+
+    <item
+        android:id="@+id/calculatorFragment5"
+        android:title="Calculator"
+        android:icon="@drawable/shorts"/>
+</menu>
