@@ -6,11 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.youtube_clone.databinding.FragmentHomeBinding
 import com.example.youtube_clone.utils.Status
 import com.example.youtube_clone.viewmodel.YoutubeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -46,25 +50,11 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        youtubeViewModel = ViewModelProvider(this)[YoutubeViewModel::class.java]
-        youtubeViewModel.getYoutubeData(binding.root.context).observe(this, Observer {
-
-            when(it.status){
-                Status.ERROR->{
-
-                }
-
-                Status.SUCCESS->{
-                    Log.d(TAG, "onCreateView: ${it.data}")
-                }
-
-                Status.LOADING->{
-
-                }
-
-            }
-
+        youtubeViewModel = ViewModelProvider(this).get(YoutubeViewModel::class.java)
+        youtubeViewModel.getWeather(12.2,12.8).observe(this, Observer {
+            Log.d(TAG, "onCreateView: $it")
         })
+
 
 
         return binding.root
