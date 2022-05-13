@@ -25,4 +25,9 @@
         android:name="com.example.youtube_clone.bottom_nav.LibraryFragment"
         android:label="fragment_library"
         tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.youtube_clone.fragments.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" />
 </navigation>

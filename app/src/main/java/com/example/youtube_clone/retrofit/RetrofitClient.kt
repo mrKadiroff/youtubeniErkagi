@@ -13,7 +13,6 @@ object RetrofitClient {
             .build()
     }
 
-    fun apiService() :RetrofitService{
-        return getRetrofit().create(RetrofitService::class.java)
-    }
+    val apiService = getRetrofit().create(RetrofitService::class.java)
+
 }

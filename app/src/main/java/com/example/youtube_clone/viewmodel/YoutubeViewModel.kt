@@ -27,22 +27,22 @@ class YoutubeViewModel : ViewModel() {
     fun getWeather(lait:Double,longit:Double): MutableLiveData<YoutubeApiData> {
 
 
-        RetrofitClient.apiService().getData("snippet","eminem", "video","AIzaSyBwqkWWk4o9gfMggm1Kz8sWfnuPZySMGrg",20).enqueue(object:
-        Callback<YoutubeApiData>{
-            override fun onResponse(
-                call: Call<YoutubeApiData>,
-                response: Response<YoutubeApiData>
-            ) {
-                if (response.isSuccessful){
-                    liveData.value = response.body()
-                }
-            }
-
-            override fun onFailure(call: Call<YoutubeApiData>, t: Throwable) {
-                Log.d(TAG, "onFailure: ${t.message}")
-            }
-
-        })
+//        RetrofitClient.apiService().getData("snippet","eminem", "video","AIzaSyBwqkWWk4o9gfMggm1Kz8sWfnuPZySMGrg",20).enqueue(object:
+//        Callback<YoutubeApiData>{
+//            override fun onResponse(
+//                call: Call<YoutubeApiData>,
+//                response: Response<YoutubeApiData>
+//            ) {
+//                if (response.isSuccessful){
+//                    liveData.value = response.body()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<YoutubeApiData>, t: Throwable) {
+//                Log.d(TAG, "onFailure: ${t.message}")
+//            }
+//
+//        })
 
         return liveData
     }

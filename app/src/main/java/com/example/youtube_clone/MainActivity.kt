@@ -3,6 +3,7 @@ package com.example.youtube_clone
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -24,6 +25,19 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+
+     fun setUi() {
+//        binding.search.setOnClickListener {
+//            binding.main.visibility = View.GONE
+//            binding.qidiruv.visibility = View.VISIBLE
+//        }
+//
+//        binding.editBack.setOnClickListener {
+//            binding.qidiruv.visibility = View.GONE
+//            binding.main.visibility = View.VISIBLE
+//
+//        }
     }
 
     private fun setBottomNav() {

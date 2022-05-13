@@ -10,12 +10,12 @@ import retrofit2.http.Query
 interface RetrofitService {
 
     @GET("search")
-    fun getData(@Query("part") part:String,
+    suspend fun getData(@Query("part") part:String,
                         @Query("q") q:String,
                         @Query("type") type:String,
                         @Query("key") key: String,
                         @Query("maxResults") maxResults:Int
-    ): Call<YoutubeApiData>
+    ): YoutubeApiData
 
 
 }
