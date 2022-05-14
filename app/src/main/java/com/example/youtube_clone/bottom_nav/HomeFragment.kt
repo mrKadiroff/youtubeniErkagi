@@ -14,9 +14,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.youtube_clone.MainActivity
 import com.example.youtube_clone.PlayActivity
 import com.example.youtube_clone.R
+import com.example.youtube_clone.adapters.MainAdapter
 import com.example.youtube_clone.adapters.PhotoAdapter
 import com.example.youtube_clone.databinding.FragmentHomeBinding
 import com.example.youtube_clone.fragments.PlayerFragment
+import com.example.youtube_clone.models2.YoutubeApiData
 import com.example.youtube_clone.pager.UserViewModel
 import com.example.youtube_clone.utils.Status
 import com.example.youtube_clone.viewmodel.YoutubeViewModel
@@ -52,17 +54,89 @@ class HomeFragment : Fragment() {
     lateinit var list: ArrayList<String>
     lateinit var youtubeViewModel: YoutubeViewModel
     lateinit var userViewModel: UserViewModel
-    lateinit var photoAdapter: PhotoAdapter
+    lateinit var mainAdapter: MainAdapter
+    var data: YoutubeApiData? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+
+        if (data!=null){
+            Log.d(TAG, "onCreateView: ${data!!.items}")
+        }
 
 
-        setRv()
 
+        binding.editMicrpophone.setOnClickListener {
+            val toString = binding.editSerach.text.toString()
+            Log.d(TAG, "onCreateView: $toString")
+            GlobalScope.launch(Dispatchers.Main) {
+                userViewModel.getWord(toString)
+                    .observe(viewLifecycleOwner) {
+
+
+
+
+
+
+                        when (it.status) {
+                            Status.LOADING -> {
+
+                            }
+
+                            Status.ERROR -> {
+                                Toast.makeText(
+                                    binding.root.context,
+                                    "Word not found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            Status.SUCCESS -> {
+
+                                try {
+
+
+                                    data = it.data
+                                    mainAdapter = MainAdapter(data!!.items,object :MainAdapter.OnItemClickListener{
+                                        override fun onItemClick(videoId: String) {
+                                            val intent = Intent(binding.root.context,PlayActivity::class.java)
+                                            intent.putExtra("video_id",videoId)
+                                            startActivity(intent)
+                                        }
+
+                                    })
+                                    binding.rvKurs.adapter = mainAdapter
+
+                                    var list = it.data
+
+                                }catch (e:java.lang.Exception){
+                                    Toast.makeText(
+                                        binding.root.context,
+                                        "Word not found",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+
+
+
+
+
+                            }
+                        }
+
+
+
+                    }
+
+
+
+            }
+        }
 
 
 
@@ -72,78 +146,77 @@ class HomeFragment : Fragment() {
 
     private fun setRv() {
 
-
-
-
-        binding.editMicrpophone.setOnClickListener {
-
-
-
-
-
-            val toString = binding.editSerach.text.toString()
-
-            userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-
-            userViewModel.word = toString
-            userViewModel.liveData.observe(this, Observer {
-
-                Log.d(TAG, "onCreateView: $it")
-
-                GlobalScope.launch(Dispatchers.Main) {
-                    photoAdapter.submitData(it)
-                }
-            })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            Log.d(TAG, "onResume: $toString")
-
-        }
-
-
-
-//        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-//
-//        userViewModel.word = "All"
-//        userViewModel.liveData.observe(this, Observer {
-//
-//            Log.d(TAG, "onCreateView: $it")
-//
-//            GlobalScope.launch(Dispatchers.Main) {
-//                photoAdapter.submitData(it)
-//            }
-//        })
     }
 
     override fun onResume() {
         super.onResume()
-
-        photoAdapter = PhotoAdapter(object :PhotoAdapter.OnItemClickListener{
-            override fun onItemClick(videoId: String) {
-                val intent = Intent(binding.root.context,PlayActivity::class.java)
-                intent.putExtra("video_id",videoId)
-                startActivity(intent)
-            }
-
-        })
-        binding.rvKurs.adapter = photoAdapter
-        photoAdapter.notifyDataSetChanged()
+        val toString = binding.editSerach.text.toString()
+        GlobalScope.launch(Dispatchers.Main) {
+            userViewModel.getWord(toString)
+                .observe(viewLifecycleOwner) {
 
 
+
+
+
+
+                    when (it.status) {
+                        Status.LOADING -> {
+
+                        }
+
+                        Status.ERROR -> {
+                            Toast.makeText(
+                                binding.root.context,
+                                "Word not found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        Status.SUCCESS -> {
+
+                            try {
+
+
+                                mainAdapter = MainAdapter(data!!.items,object :MainAdapter.OnItemClickListener{
+                                    override fun onItemClick(videoId: String) {
+                                        val intent = Intent(binding.root.context,PlayActivity::class.java)
+                                        intent.putExtra("video_id",videoId)
+                                        startActivity(intent)
+                                    }
+
+                                })
+                                binding.rvKurs.adapter = mainAdapter
+
+                                var list = it.data
+
+                            }catch (e:java.lang.Exception){
+                                Toast.makeText(
+                                    binding.root.context,
+                                    "Word not found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+
+
+
+
+
+                        }
+                    }
+
+
+
+                }
+
+
+
+        }
 
     }
+
+
 
     companion object {
         /**
